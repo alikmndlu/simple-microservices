@@ -1,5 +1,6 @@
 package com.alikmndlu.address.controller;
 
+import com.alikmndlu.address.dto.AddressUserDto;
 import com.alikmndlu.address.model.Address;
 import com.alikmndlu.address.service.AddressService;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,14 @@ public class AddressController {
         return addressService.saveAddress(address);
     }
 
+    // Get Address With Id
     @GetMapping("/{id}")
-    public Address findUserById(@PathVariable Long id){
-        log.info("Inside findUserById method of AddressController");
-        return addressService.findUserById(id);
+    public AddressUserDto findAddressByIdWithUserDetails(@PathVariable Long id){
+        log.info("Inside findAddressByIdWithUserDetails method of AddressController");
+        return addressService.findAddressByIdWithUserDetails(id);
     }
 
+    // Find All Addresses That Belongs To User
     @GetMapping("/user/{id}")
     public List<Address> getAddressesByUserId(@PathVariable("id") Long userId){
         log.info("Inside getAddressesByUserId method of AddressController");

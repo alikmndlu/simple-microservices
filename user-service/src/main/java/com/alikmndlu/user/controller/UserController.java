@@ -21,6 +21,15 @@ public class UserController {
         return userService.saveUser(user);
     }
 
+    // Get User Without Addresses
+    @GetMapping("/get/{id}")
+    public User getUserWithoutAddresses(@PathVariable Long id) {
+        log.info("Inside getUserWithoutAddresses method of UserController");
+        return userService.findUserById(id);
+    }
+
+
+    // Get User With Addresses List
     @GetMapping("/{id}")
     public UserAddressesListDto getUserWithAddresses(@PathVariable Long id) {
         log.info("Inside getUserWithAddresses method of UserController");

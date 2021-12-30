@@ -1,4 +1,4 @@
-package com.alikmndlu.user.dto;
+package com.alikmndlu.address.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDto {
+public class User {
 
     private Long id;
 
-    private Long userId;
+    private String firstName;
 
-    private String address;
+    private String lastName;
+
+    private String emailAddress;
 }

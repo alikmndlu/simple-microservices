@@ -1,13 +1,12 @@
 package com.alikmndlu.user.service.impl;
 
-import com.alikmndlu.user.dto.AddressDto;
+import com.alikmndlu.user.dto.Address;
 import com.alikmndlu.user.dto.UserAddressesListDto;
 import com.alikmndlu.user.model.User;
 import com.alikmndlu.user.repository.UserRepository;
 import com.alikmndlu.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
         UserAddressesListDto dto = new UserAddressesListDto();
 
         User user = userRepository.findById(id).orElse(null);
-        List<AddressDto> addresses = restTemplate.getForObject(
+        List<Address> addresses = restTemplate.getForObject(
                 "http://localhost:9002/addresses/user/" + user.getId(),
                 List.class
         );

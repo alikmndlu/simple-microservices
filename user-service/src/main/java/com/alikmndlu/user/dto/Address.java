@@ -1,18 +1,17 @@
 package com.alikmndlu.user.dto;
 
-import com.alikmndlu.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAddressesListDto {
+public class Address {
 
-    private User user;
+    private Long id;
 
-    private List<Address> address;
+    private Long userId;
+
+    private String address;
 }
