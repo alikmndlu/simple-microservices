@@ -1,8 +1,8 @@
 package com.alikmndlu.user.controller;
 
+import com.alikmndlu.user.dto.UserAddressesListDto;
 import com.alikmndlu.user.model.User;
 import com.alikmndlu.user.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/")
-    public User registerUser(@RequestBody User user){
-        log.info("Inside registerUser method of UserController");
-        return userService.registerUser(user);
+    public User saveUser(@RequestBody User user) {
+        log.info("Inside saveUser method of UserController");
+        return userService.saveUser(user);
     }
 
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable Long id){
-        log.info("Inside findUserById method of UserController");
-        return userService.findUserById(id);
+    public UserAddressesListDto getUserWithAddresses(@PathVariable Long id) {
+        log.info("Inside getUserWithAddresses method of UserController");
+        return userService.getUserWithAddresses(id);
     }
 }
