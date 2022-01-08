@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         log.info("Inside getUserWithAddresses method of UserService");
         UserAddressesListDto dto = new UserAddressesListDto();
 
-        User user = userRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).get();
         List<Address> addresses = restTemplate.getForObject(
                 "http://localhost:9002/addresses/user/" + user.getId(),
                 List.class
