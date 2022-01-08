@@ -1,11 +1,15 @@
 package com.alikmndlu.user.controller;
 
 import com.alikmndlu.user.dto.UserAddressesListDto;
+import com.alikmndlu.user.dto.UserCredentialsDto;
 import com.alikmndlu.user.model.User;
 import com.alikmndlu.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -23,9 +27,13 @@ public class UserController {
 
     // Get User Without Addresses
     @GetMapping("/get/{id}")
-    public User getUserWithoutAddresses(@PathVariable Long id) {
+    public ResponseEntity<User> getUserWithoutAddresses(@PathVariable Long id) {
         log.info("Inside getUserWithoutAddresses method of UserController");
-        return userService.findUserById(id);
+        User user = userService.findUserById(id);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok().body(user);
     }
 
 
@@ -34,5 +42,18 @@ public class UserController {
     public UserAddressesListDto getUserWithAddresses(@PathVariable Long id) {
         log.info("Inside getUserWithAddresses method of UserController");
         return userService.getUserWithAddresses(id);
+    }
+
+    @PostMapping("/check-login")
+    public ResponseEntity<?> isUserExistsWithEmailAddressAndPassword(@RequestBody UserCredentialsDto userCredentialsDto){
+        Optional<User> user = userService.findByEmailAddressAndPassword(userCredentialsDto.getEmailAddress(), userCredentialsDto.getPassword());
+        System.out.println(userCredentialsDto);
+        System.out.println(user);
+
+        if (user.isEmpty()){
+            return ResponseEntity.ok().body("NO");
+        } else {
+            return ResponseEntity.ok().body("YES");
+        }
     }
 }

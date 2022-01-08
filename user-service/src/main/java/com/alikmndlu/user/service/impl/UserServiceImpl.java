@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -48,5 +49,12 @@ public class UserServiceImpl implements UserService {
         dto.setAddress(addresses);
 
         return dto;
+    }
+
+    @Override
+    public Optional<User> findByEmailAddressAndPassword(String emailAddress, String password) {
+        User user = userRepository.findByEmailAddressAndPassword(emailAddress, password);
+        if (user == null) return Optional.empty();
+        return Optional.of(user);
     }
 }

@@ -2,7 +2,8 @@ package com.alikmndlu.user.service;
 
 import com.alikmndlu.user.dto.UserAddressesListDto;
 import com.alikmndlu.user.model.User;
-import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 public interface UserService {
 
@@ -11,4 +12,6 @@ public interface UserService {
     User findUserById(Long id);
 
     UserAddressesListDto getUserWithAddresses(Long id);
+
+    Optional<User> findByEmailAddressAndPassword(String emailAddress, String password);
 }
