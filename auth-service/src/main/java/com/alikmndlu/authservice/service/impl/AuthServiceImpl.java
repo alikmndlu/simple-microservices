@@ -2,7 +2,8 @@ package com.alikmndlu.authservice.service.impl;
 
 import com.alikmndlu.authservice.dto.UserCredentialsDto;
 import com.alikmndlu.authservice.service.AuthService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -11,6 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.Instant;
+import java.util.Date;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +37,14 @@ public class AuthServiceImpl implements AuthService {
                 entity,
                 String.class
         );
-
         return loginResponse.getBody().equals("YES");
+    }
+
+    @Override
+    public String createJwtForAuthenticatedUser(UserCredentialsDto userCredentialsDto) {
+        return JWT.create()
+                .withIssuer("auth0")
+                .withSubject(userCredentialsDto.getEmailAddress())
+                .sign(Algorithm.HMAC256("secret-key"));
     }
 }
