@@ -38,16 +38,19 @@ public class AuthController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<?> test(@RequestHeader(name = "Authorization", required = false) String token){
+    public ResponseEntity<?> test(@RequestHeader(name = "Authorization", required = false) String token) {
+
         if (token == null)
             return ResponseEntity.badRequest().build();
+
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256("secret-key")).withIssuer("auth0").build();
-            DecodedJWT jwt = verifier.verify(token);
-            log.info("Valid Token Sent To The Server, {}", jwt.getSubject());
+
+            DecodedJWT jwt = JWT.require(
+                    Algorithm.HMAC256("secret-key")
+            ).withIssuer("auth0").build().verify(token);
+
             return ResponseEntity.ok().body(jwt.getSubject());
-        } catch (JWTVerificationException exception){
-            log.info("Invalid Token Sent To The Server");
+        } catch (JWTVerificationException exception) {
             return ResponseEntity.badRequest().build();
         }
     }

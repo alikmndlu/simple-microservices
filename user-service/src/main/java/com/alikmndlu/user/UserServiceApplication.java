@@ -33,6 +33,15 @@ public class UserServiceApplication {
                             .password("123")
                             .build()
             );
+
+            userService.saveUser(
+                    User.builder()
+                            .firstName("Hamid")
+                            .lastName("Amirkaveh")
+                            .emailAddress("hamidamirkaveh1@gmail.com")
+                            .password("123")
+                            .build()
+            );
         };
     }
 }

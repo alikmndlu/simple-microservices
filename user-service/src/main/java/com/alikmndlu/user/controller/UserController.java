@@ -50,22 +50,25 @@ public class UserController {
     public ResponseEntity<?> getUserWithAddresses(
             @PathVariable Long id,
             @RequestHeader(name = "Authorization", required = false) String token) {
-        log.info("Inside getUserWithAddresses method of UserController");
 
         if (token == null)
             return ResponseEntity.badRequest().build();
 
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256("secret-key")).withIssuer("auth0").build();
-            DecodedJWT jwt = verifier.verify(token);
-            log.info("Valid Token Sent To The Server, {}", jwt.getSubject());
-        } catch (JWTVerificationException exception){
-            log.info("Invalid Token Sent To The Server");
+
+            DecodedJWT jwt = JWT.require(
+                    Algorithm.HMAC256("secret-key")
+            ).withIssuer("auth0").build().verify(token);
+
+            UserAddressesListDto userAddressesListDto = userService.getUserWithAddresses(id);
+
+            if (!jwt.getSubject().equals(userAddressesListDto.getUser().getEmailAddress()))
+                return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok().body(userAddressesListDto);
+
+        } catch (JWTVerificationException exception) {
             return ResponseEntity.badRequest().build();
         }
-
-        log.info("Inside getUserWithAddresses method of UserController");
-        return ResponseEntity.ok().body(userService.getUserWithAddresses(id));
     }
 
     // Check User Exists With Credentials Or Not
