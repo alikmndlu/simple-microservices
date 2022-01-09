@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+
 
     @PostMapping("/")
     public User saveUser(@RequestBody User user) {
@@ -36,7 +38,6 @@ public class UserController {
             return ResponseEntity.ok().body(user);
     }
 
-
     // Get User With Addresses List
     @GetMapping("/{id}")
     public UserAddressesListDto getUserWithAddresses(@PathVariable Long id) {
@@ -44,13 +45,14 @@ public class UserController {
         return userService.getUserWithAddresses(id);
     }
 
-    @PostMapping("/check-login")
-    public ResponseEntity<?> isUserExistsWithEmailAddressAndPassword(@RequestBody UserCredentialsDto userCredentialsDto){
-        Optional<User> user = userService.findByEmailAddressAndPassword(userCredentialsDto.getEmailAddress(), userCredentialsDto.getPassword());
-        System.out.println(userCredentialsDto);
-        System.out.println(user);
+    // Check User Exists With Credentials Or Not
+    @PostMapping("/check-user-exists")
+    public ResponseEntity<?> isUserExistsWithEmailAddressAndPassword(@RequestBody UserCredentialsDto userCredentialsDto) {
+        Optional<User> user = userService.findByEmailAddressAndPassword(
+                userCredentialsDto.getEmailAddress(), userCredentialsDto.getPassword()
+        );
 
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             return ResponseEntity.ok().body("NO");
         } else {
             return ResponseEntity.ok().body("YES");
