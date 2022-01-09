@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.Optional;
 
 @Slf4j
@@ -22,9 +23,10 @@ public class UserController {
 
 
     @PostMapping("/")
-    public User saveUser(@RequestBody User user) {
+    public ResponseEntity<User> saveUser(@RequestBody User user) {
         log.info("Inside saveUser method of UserController");
-        return userService.saveUser(user);
+        user = userService.saveUser(user);
+        return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
 
     // Get User Without Addresses
@@ -40,9 +42,9 @@ public class UserController {
 
     // Get User With Addresses List
     @GetMapping("/{id}")
-    public UserAddressesListDto getUserWithAddresses(@PathVariable Long id) {
+    public ResponseEntity<UserAddressesListDto> getUserWithAddresses(@PathVariable Long id) {
         log.info("Inside getUserWithAddresses method of UserController");
-        return userService.getUserWithAddresses(id);
+        return ResponseEntity.ok().body(userService.getUserWithAddresses(id));
     }
 
     // Check User Exists With Credentials Or Not
