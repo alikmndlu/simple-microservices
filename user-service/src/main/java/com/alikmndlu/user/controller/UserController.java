@@ -73,15 +73,15 @@ public class UserController {
 
     // Check User Exists With Credentials Or Not
     @PostMapping("/check-user-exists")
-    public ResponseEntity<?> isUserExistsWithEmailAddressAndPassword(@RequestBody UserCredentialsDto userCredentialsDto) {
+    public ResponseEntity<Boolean> isUserExistsWithEmailAddressAndPassword(@RequestBody UserCredentialsDto userCredentialsDto) {
         Optional<User> user = userService.findByEmailAddressAndPassword(
                 userCredentialsDto.getEmailAddress(), userCredentialsDto.getPassword()
         );
 
         if (user.isEmpty()) {
-            return ResponseEntity.ok().body("NO");
+            return ResponseEntity.ok().body(false);
         } else {
-            return ResponseEntity.ok().body("YES");
+            return ResponseEntity.ok().body(true);
         }
     }
 }

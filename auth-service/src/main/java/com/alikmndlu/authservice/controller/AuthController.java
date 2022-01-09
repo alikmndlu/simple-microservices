@@ -50,6 +50,7 @@ public class AuthController {
             ).withIssuer("auth0").build().verify(token);
 
             return ResponseEntity.ok().body(jwt.getSubject());
+
         } catch (JWTVerificationException exception) {
             return ResponseEntity.badRequest().build();
         }

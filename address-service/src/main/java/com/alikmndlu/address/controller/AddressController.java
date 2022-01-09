@@ -30,7 +30,7 @@ public class AddressController {
     @PostMapping("/")
     public ResponseEntity<Address> saveAddress(
             @RequestBody Address address,
-            @RequestHeader(name = "Authorization", required = false) String token){
+            @RequestHeader(name = "Authorization", required = false) String token) {
 
         if (token == null)
             return ResponseEntity.badRequest().build();
@@ -57,7 +57,7 @@ public class AddressController {
     @GetMapping("/{id}")
     public ResponseEntity<AddressUserDto> findAddressByIdWithUserDetails(
             @PathVariable Long id,
-            @RequestHeader(name = "Authorization", required = false) String token){
+            @RequestHeader(name = "Authorization", required = false) String token) {
 
         log.info("Inside findAddressByIdWithUserDetails method of AddressController");
         return ResponseEntity.ok().body(addressService.findAddressByIdWithUserDetails(id));
@@ -65,7 +65,7 @@ public class AddressController {
 
     // Find All Addresses That Belongs To User
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<Address>> getAddressesByUserId(@PathVariable("id") Long userId){
+    public ResponseEntity<List<Address>> getAddressesByUserId(@PathVariable("id") Long userId) {
         log.info("Inside getAddressesByUserId method of AddressController");
         return ResponseEntity.ok().body(addressService.getAddressesByUserId(userId));
     }

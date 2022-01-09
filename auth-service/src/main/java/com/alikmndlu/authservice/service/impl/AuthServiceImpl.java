@@ -6,6 +6,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,12 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final RestTemplate restTemplate;
@@ -28,16 +26,17 @@ public class AuthServiceImpl implements AuthService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(
+        HttpEntity<String> requestBody = new HttpEntity<>(
                 new ObjectMapper().writeValueAsString(userCredentialsDto), headers
         );
 
-        ResponseEntity<?> loginResponse = restTemplate.postForEntity(
+        ResponseEntity<Boolean> loginStatus = restTemplate.postForEntity(
                 "http://localhost:9001/users/check-user-exists",
-                entity,
-                String.class
+                requestBody,
+                Boolean.class
         );
-        return loginResponse.getBody().equals("YES");
+
+        return Boolean.TRUE.equals(loginStatus.getBody());
     }
 
     @Override

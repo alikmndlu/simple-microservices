@@ -7,6 +7,7 @@ import com.alikmndlu.address.repository.AddressRepository;
 import com.alikmndlu.address.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,12 +32,11 @@ public class AddressServiceImpl implements AddressService {
     public AddressUserDto findAddressByIdWithUserDetails(Long id) {
         log.info("Inside findAddressById method of AddressService");
         Address address = addressRepository.findById(id).orElse(null);
-        User user = restTemplate.getForObject(
+        ResponseEntity<User> user = restTemplate.getForEntity(
                 "http://localhost:9001/users/get/" + address.getUserId(),
                 User.class
         );
-        System.out.println(user);
-        return new AddressUserDto(address, user);
+        return new AddressUserDto(address, user.getBody());
     }
 
     @Override
